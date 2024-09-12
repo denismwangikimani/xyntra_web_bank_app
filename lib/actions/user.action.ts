@@ -5,9 +5,14 @@ import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "../utils";
 
-export const signIn = async () => {
+export const signIn = async ({ email, password }: signInProps) => {
   try {
     //mutate the database
+    const { account } = await createAdminClient();
+
+    //we will create a response variable that will hold the response from the signIn function
+    const response = await account.createEmailPasswordSession(email, password);
+    return parseStringify(response);
   } catch (error) {
     console.error("Error:", error);
   }
@@ -52,3 +57,16 @@ export async function getLoggedInUser() {
     return null;
   }
 }
+
+// we will use this function to log out the user
+export const logoutAccount = async () => {
+  try {
+    const { account } = await createSessionClient();
+
+    cookies().delete("appwrite-session");
+
+    await account.deleteSession("current");
+  } catch (error) {
+    return null;
+  }
+};

@@ -6,6 +6,7 @@ import React from "react";
 import { sidebarLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Footer from "./Footer";
 
 // We will destructure the user prop from the Sidebar component
 const Sidebar = ({ user }: SiderbarProps) => {
@@ -59,7 +60,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
         USER
       </nav>
 
-      FOOTER
+      <Footer user={user} />
     </section>
   );
 };
