@@ -15,13 +15,13 @@ import CustomInput from "@/components/CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 //import SignIn from "@/app/(auth)/sign-in/page";
-import { useRouter } from "next/router";
-import { signIn, signUp } from "@/lib/actions/user.action";
+//import { useRouter } from "next/router";
+import { signUp } from "@/lib/actions/user.action";
 
 // We will use this component to render the form for sign-in and sign-up by passing in the type
 const AuthForm = ({ type }: { type: string }) => {
   // We will use the router to redirect the user to the home page after they sign in
-  const router = useRouter();
+  //const router = useRouter();
   //we will set the user to null
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,7 @@ const AuthForm = ({ type }: { type: string }) => {
   });
 
   // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // We will set the isLoading to true
     setIsLoading(true);
 
@@ -53,14 +53,14 @@ const AuthForm = ({ type }: { type: string }) => {
       }
       if (type === "sign-in") {
         //we will create a response variable that will hold the response from the signIn function
-        
+        /*
         const response = await signIn({
           email: data.email,
           password: data.password,
         });
         //if the response is successful, we will set the user to the response to send the user to the "/"
         if (response) router.push("/");
-        
+        */
       }
     } catch (error) {
       console.log(error);
