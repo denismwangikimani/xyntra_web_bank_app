@@ -1,9 +1,8 @@
 import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
-import { getLoggedInUser } from "@/lib/actions/user.action";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-
 
 export default async function RootLayout({
   children,
@@ -20,7 +19,7 @@ export default async function RootLayout({
     <main className="flex h-screen w-full font-inter">
       {/* We will pass the loggedIn state to the Sidebar component */}
       <Sidebar user={loggedIn} />
-      
+
       {/* We will render the mobile nav(sidebar) */}
       <div className="flex size-full flex-col">
         <div className="root-layout">
