@@ -34,9 +34,9 @@ export const signIn = async ({ email, password }: signInProps) => {
   }
 };
 
-export const signUp = async ({ ...userData }: SignUpParams) => {
+export const signUp = async ({ password, ...userData }: SignUpParams) => {
   //we will destruct the email, password, firstName, lastName from the userData object
-  const { email, password, firstName, lastName } = userData;
+  const { email, firstName, lastName } = userData;
   let newUserAccount;
 
   try {
