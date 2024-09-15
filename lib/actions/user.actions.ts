@@ -1,6 +1,6 @@
 "use server";
 
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
 import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
@@ -21,16 +21,48 @@ const {
   APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
 } = process.env;
 
+//we will create a getUserInfoProps interface that will hold the userId
+export const getUserInfo = async ({ userId }: getUserInfoProps) => {
+  try {
+    //we will create an admin client and destructure the database from the client
+    const { database } = await createAdminClient();
+
+    const user = await database.listDocuments(
+      //we will pass in the DATABASE_ID, USER_COLLECTION_ID, and a query that will equal the userId
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      [Query.equal("userId", [userId])]
+    );
+
+    //we will parse the user and return the first document in the user collection
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//we will create a signIn function that will take in the email and password as parameters
 export const signIn = async ({ email, password }: signInProps) => {
   try {
-    //mutate the database
+    //we will create an admin client and destructure the account from the client
     const { account } = await createAdminClient();
+    const session = await account.createEmailPasswordSession(email, password);
 
-    //we will create a response variable that will hold the response from the signIn function
-    const response = await account.createEmailPasswordSession(email, password);
-    return parseStringify(response);
+    //we will set the appwrite-session cookie
+    cookies().set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+
+    //we will create a user variable that will hold the response from the getLoggedInUser function
+    const user = await getUserInfo({ userId: session.userId });
+
+    //we will parse the user and return it
+    return parseStringify(user);
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error", error);
   }
 };
 
@@ -99,8 +131,13 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 // we will use this function to get the logged in user
 export async function getLoggedInUser() {
   try {
+    //we will create a session client and destructure the account from the client
     const { account } = await createSessionClient();
-    const user = await account.get();
+    //we will get the account
+    const result = await account.get();
+
+    //we will get the user info
+    const user = await getUserInfo({ userId: result.$id})
     return parseStringify(user);
   } catch (error) {
     return null;
@@ -244,5 +281,48 @@ export const exchangePublicToken = async ({
     });
   } catch (error) {
     console.error("An error occurred while creating exchanging token:", error);
+  }
+};
+
+//we will create a function that will get all thr banks form the user using the userId as a param
+export const getBanks = async ({ userId }: getBanksProps) => {
+  try {
+    //we will create an admin client and destructure the database from the client
+    const { database } = await createAdminClient();
+
+    //we will create a banks variable that will hold the response from the listDocuments function, which will list the documents in the bank collection
+    const banks = await database.listDocuments(
+      //we will pass in the DATABASE_ID, BANK_COLLECTION_ID, and a query that will equal the userId
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
+      [Query.equal("userId", [userId])]
+    );
+
+    //we will parse the banks and return the documents in the bank collection
+    return parseStringify(banks.documents);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//we will create a function that will get a bank from the bank collection
+//we will pass in the documentId as a parameter
+export const getBank = async ({ documentId }: getBankProps) => {
+  try {
+    //we will create an admin client and destructure the database from the client
+    const { database } = await createAdminClient();
+
+    //we will create a bank variable that will hold the response from the listDocuments function, which will list the documents in the bank collection
+    const bank = await database.listDocuments(
+      //we will pass in the DATABASE_ID, BANK_COLLECTION_ID, and a query that will equal the documentId
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
+      [Query.equal("$id", [documentId])]
+    );
+
+    //we will parse the bank and return the first document in the bank collection
+    return parseStringify(bank.documents[0]);
+  } catch (error) {
+    console.log(error);
   }
 };
