@@ -51,7 +51,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
         {/* We will render the RecentTransactions component */}
         <RecentTransactions
           accounts={accountsData}
-          transactions={accounts?.transactions} //accounts.transactions
+          transactions={account?.transactions} //accounts.transactions
           appwriteItemId={appwriteItemId}
           page={currentPage}
         />
@@ -60,7 +60,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
       {/* We will render the RightSidebar component where we will pass in user, transactions and banks as an array */}
       <RightSidebar
         user={loggedIn}
-        transactions={accounts?.transactions}
+        transactions={account?.transactions}
         banks={accountsData?.slice(0, 2)} //we will slice the first two banks
       />
     </section>
