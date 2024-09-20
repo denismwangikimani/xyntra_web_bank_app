@@ -76,7 +76,7 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
 
           <div className="space-y-5">
             {/* We will map over the categories */}
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <Category key={category.name} category={category} />
             ))}
           </div>

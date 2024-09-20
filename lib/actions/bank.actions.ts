@@ -152,6 +152,7 @@ export const getTransactions = async ({
   accessToken,
 }: getTransactionsProps) => {
   let hasMore = true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let transactions: any = [];
 
   try {
