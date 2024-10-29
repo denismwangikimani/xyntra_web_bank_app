@@ -17,7 +17,11 @@ const Sidebar = ({ user }: SiderbarProps) => {
   return (
     <section className="sidebar">
       <nav className="flex flex-col gap-4">
-        <Link href="/" className="mb-12 cursor-pointer flex items-center gap-1 pb-4">
+        <Link
+          href="/"
+          className="mb-12 cursor-pointer flex items-center gap-1 pb-4"
+        >
+          {/*
           <Image
             width={34}
             height={34}
@@ -25,6 +29,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
             alt="xyntra logo"
             className="size-[24px] max-xl:size-14"
           />
+            */}
           <h1 className="sidebar-logo">Xyntra</h1>
         </Link>
 
