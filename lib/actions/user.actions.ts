@@ -137,7 +137,7 @@ export async function getLoggedInUser() {
     const result = await account.get();
 
     //we will get the user info
-    const user = await getUserInfo({ userId: result.$id})
+    const user = await getUserInfo({ userId: result.$id });
     return parseStringify(user);
   } catch (error) {
     return null;
@@ -319,6 +319,33 @@ export const getBank = async ({ documentId }: getBankProps) => {
       BANK_COLLECTION_ID!,
       [Query.equal("$id", [documentId])]
     );
+
+    //we will parse the bank and return the first document in the bank collection
+    return parseStringify(bank.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//we will create a function that will get bankById from the bank collection
+//we will pass in the coountId as a parameter
+export const getBankByAccountId = async ({
+  accountId,
+}: getBankByAccountIdProps) => {
+  try {
+    //we will create an admin client and destructure the database from the client
+    const { database } = await createAdminClient();
+
+    //we will create a bank variable that will hold the response from the listDocuments function, which will list the documents in the bank collection
+    const bank = await database.listDocuments(
+      //we will pass in the DATABASE_ID, BANK_COLLECTION_ID, and a query that will equal the accountId
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
+      [Query.equal("accountId", [accountId])]
+    );
+
+    //we will return null if the bank total is not equal to 1
+    if (bank.total !== 1) return null;
 
     //we will parse the bank and return the first document in the bank collection
     return parseStringify(bank.documents[0]);

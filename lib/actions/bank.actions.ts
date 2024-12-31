@@ -1,18 +1,18 @@
 "use server";
 
 import {
-  ACHClass,
+  //ACHClass,
   CountryCode,
-  TransferAuthorizationCreateRequest,
-  TransferCreateRequest,
-  TransferNetwork,
-  TransferType,
+  //TransferAuthorizationCreateRequest,
+  //TransferCreateRequest,
+  //TransferNetwork,
+  //TransferType,
 } from "plaid";
 
 import { plaidClient } from "../plaid";
 import { parseStringify } from "../utils";
 
-//import { getTransactionsByBankId } from "./transaction.actions";
+import { getTransactionsByBankId } from "./transaction.actions";
 import { getBanks, getBank } from "./user.actions";
 
 // Get multiple bank accounts
@@ -115,13 +115,14 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     };
 
     // sort transactions by date such that the most recent transaction is first
-      const allTransactions = [...transactions, ...transferTransactions].sort(
+    const allTransactions = [...transactions, ...transferTransactions].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
     return parseStringify({
       data: account,
       transactions: allTransactions,
+      //transactions: transactions,
     });
   } catch (error) {
     console.error("An error occurred while getting the account:", error);
@@ -151,6 +152,7 @@ export const getTransactions = async ({
   accessToken,
 }: getTransactionsProps) => {
   let hasMore = true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let transactions: any = [];
 
   try {

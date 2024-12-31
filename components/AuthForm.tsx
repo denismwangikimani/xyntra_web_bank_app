@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+//import Image from "next/image";
 
 //add shadcn form using zod and react form
 import { z } from "zod";
@@ -87,6 +87,7 @@ const AuthForm = ({ type }: { type: string }) => {
     <section className="auth-form">
       <header className="flex flex-col gap-5 md:gap-8">
         <Link href="/" className="cursor-pointer flex items-center gap-1">
+          {/*
           <Image
             width={34}
             height={34}
@@ -94,6 +95,7 @@ const AuthForm = ({ type }: { type: string }) => {
             alt="xyntra logo"
             className="size-[24px] max-xl:size-14"
           />
+        */}
           <h1 className="sidebar-logo">Xyntra</h1>
         </Link>
 

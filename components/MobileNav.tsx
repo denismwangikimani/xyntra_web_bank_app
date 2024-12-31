@@ -33,12 +33,14 @@ const MobileNav = ({ user }: MobileNavProps) => {
             href="/"
             className="cursor-pointer flex items-center gap-1 px-4"
           >
+            {/*
             <Image
               src="/icons/logo.svg"
               width={34}
               height={34}
               alt="Xyntra logo"
             />
+            */}
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
               Xyntra
             </h1>

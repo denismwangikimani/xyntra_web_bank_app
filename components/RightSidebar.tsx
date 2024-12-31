@@ -2,9 +2,13 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import BankCard from "./BankCard";
+import { countTransactionCategories } from "@/lib/utils";
+import Category from "./Category";
 
 // We will create a functional component called RightSidebar and pass in the user, transactions and banks as props
 const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
+  const categories: CategoryCount[] = countTransactionCategories(transactions);
+
   return (
     // We will create a right-sidebar section
     <aside className="right-sidebar">
@@ -65,6 +69,18 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
             )}
           </div>
         )}
+
+        {/*we will implement the category section */}
+        <div className="flex flex-col flex-1 mt-10 gap-6">
+          <h1 className="header-2">Top Categories</h1>
+
+          <div className="space-y-5">
+            {/* We will map over the categories */}
+            {categories.map((category) => (
+              <Category key={category.name} category={category} />
+            ))}
+          </div>
+        </div>
       </section>
     </aside>
   );
